@@ -1,0 +1,195 @@
+{% extends "orders/base.html" %} {% block title %} Carrito {% endblock %} {% block header %}
+<div>
+    <ul class="nav justify-content-end nav-pills">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'menu'  %}" id="">Menu</a>
+        </li>
+        {% if user.is_staff %}
+        <li class="nav-item">
+            <a class="nav-link" href="{%url 'Ordenes' %}"> Ver ordenes </a>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}" id="">Logout</a>
+        </li>
+    </ul>
+</div>
+{% endblock %} {% block body %} {% load staticfiles %}
+<style>
+    .my-custom-scrollbar {
+        position: relative;
+        height: 60vh;
+        overflow: auto;
+    }
+    
+    .table-wrapper-scroll-y {
+        display: block;
+    }
+</style>
+<script>
+    function Continuar(params) {
+        var name = document.querySelectorAll('input[type="checkbox"]:checked')
+        var array = new Array(lista.length)
+        for (var i = 0; i < lista.length; i++) {
+            array.push(lista[i].nextSibling.data)
+        }
+        lista = array.slice(lista.length, lista.length * 2)
+        console.log(lista)
+
+
+        const form = document.createElement('form');
+        form.method = 'post';
+        form.action = "/confirm";
+        const hiddenField = document.createElement('input');
+        hiddenField.type = 'hidden';
+        hiddenField.name = 'lista';
+        hiddenField.value = lista;
+
+        form.appendChild(hiddenField);
+
+        const hiddenField2 = document.createElement('input');
+        hiddenField2.type = 'hidden';
+        hiddenField2.name = 'csrfmiddlewaretoken';
+        hiddenField2.value = '{{ csrf_token }}';
+
+        form.appendChild(hiddenField2);
+
+        const hiddenField3 = document.createElement('input');
+        //let p = "{{product.id}}"
+        hiddenField3.type = 'hidden';
+        hiddenField3.name = 'productID';
+        hiddenField3.value = "{{product.id}}";
+
+        form.appendChild(hiddenField3);
+
+        document.body.appendChild(form);
+        form.submit();
+
+        return
+    }
+</script>
+<div class="container">
+    <div align="center">
+        <h1>Commnets </h1>
+    </div>
+    <div class="row">
+        <div class="col-md">
+
+        </div>
+        <div class="col-md-10">
+            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                <table class="table table-borderless">
+                    <thead>
+                    </thead>
+                    <tbody>
+
+                        {% for color,comentario in Comments %}
+                        <!-- {{data}}{{data.color}} -->
+                        <tr>
+                            <td>
+                                <div class="container">
+
+                                    <div class="row justify-content-center">
+                                        <div class="col-10">
+                                            <div class="card">
+                                                <div class="card-header" style="background-color:{{color}};">
+                                                    <div class="row">
+
+                                                        <div class="col-md-11">
+
+                                                            {{comentario.userID}}
+                                                        </div>
+                                                        <div class="col-md-1">
+
+                                                            <span class="badge badge-success badge-pill">
+                                                                <h5>
+                                                                    {{comentario.rank}}
+                                                                </h5>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <blockquote class="blockquote mb-0">
+                                                        <p>{{comentario.comment}}</p>
+                                                        <!--  <footer class="blockquote-footer"> lol </footer> -->
+                                                    </blockquote>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                    <tbody id="mensajes">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md">
+
+
+        </div>
+
+    </div>
+    <div class="row">
+        <br>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-md">
+
+        </div>
+        <div class="col-md-8" style="background-color: brown;">
+            <form action="" method="POST">
+                <div class="form-row">
+                    <div class="form-group col-md-1">
+                        <label for="rank">Rank</label>
+                        <select class="form-control" id="rank" name="rank">
+                                    <option value = 1>1</option>
+                                    <option value = 2>2</option>
+                                    <option value = 3>3</option>
+                                    <option value = 4>4</option>
+                                    <option value = 5>5</option>
+                                </select>
+                        <!-- <input type="number" class="form-control" id="rk" name="rank"> -->
+                    </div>
+                    <div class="form-group col-md-11">
+                        <label for="comment">Review</label>
+                        <textarea type="text" class="form-control" name="comment" id="comment" placeholder="Enter comment"></textarea>
+                    </div>
+                    {% csrf_token %}
+                    <button class="btn btn-primary" type="submit" id="boton">Add comment</button>
+                </div>
+            </form>
+            <!--             <div class="input-group mb-3">
+                <input id="msg" autocomplete="off" autofocus type="text" class="form-control" placeholder="Write your message here!" aria-label="Recipient's username" aria-describedby="basic-addon2">
+
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" id="boton">Add comment</button>
+                </div>
+            </div> -->
+        </div>
+        <div class="col-md">
+
+        </div>
+
+    </div>
+</div>
+<!--     {%for producto,producto2 in Cart%}
+    <li>{{producto.product}} - {{producto.tipe}} - {{producto.size}} - {{producto2.topings}} - {{producto.price}}</li>
+
+    {%endfor%} -->
+
+
+<!-- <button id="boton"> Order </button> -->
+
+
+{% endblock %}
