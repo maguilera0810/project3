@@ -49,7 +49,7 @@ def login_view(request):
         else:
             return render(request, "orders/login.html", {"message": "Invalid credentials."})
     else:
-        return render(request, "orders/login.html", {"message": "Ingresar porfa"})
+        return render(request, "orders/login.html", {"message": "Login"})
 
 
 def topink(request):
@@ -122,7 +122,7 @@ def cart(request):
     # print(models.Carrito.objects.all())
     return render(
         request,
-        "orders/carrito.html",
+        "orders/cart.html",
         {"Cart": zip(indice, productos, Carrito),
          "Cart2": Carrito,
          "precio": round(suma, 2)
@@ -174,7 +174,7 @@ def AddtoCart(request):
     # print(models.Carrito.objects.all())
     return render(
         request,
-        "orders/carrito.html",
+        "orders/cart.html",
         {"Cart": zip(indice, productos, Carrito),
          "Cart2": Carrito,
          "precio": round(suma, 2)
@@ -216,7 +216,7 @@ def selectTopping(request, product):
 
         return render(
             request,
-            "orders/carrito.html",
+            "orders/cart.html",
             {
                 "Cart": zip(indice, productos, Carrito),
                 "Cart2": Carrito,
